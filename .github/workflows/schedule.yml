@@ -1,10 +1,19 @@
+name: Run Every 2 Minutes
+
 on:
   schedule:
     - cron: '*/2 * * * *'
+  workflow_dispatch:  # Allows manual triggering for testing
+  push:  # Also run on push for immediate testing
+    branches: [ main, master ]
 
 jobs:
   hello_world:
     runs-on: ubuntu-latest
     steps:
       - name: Echo current time
-        run: echo "The current server time is $(date)"
+        run: |
+          echo "The current server time is $(date)"
+          echo "Triggered by: ${{ github.event_name }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref }}"
